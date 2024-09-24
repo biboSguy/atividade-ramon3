@@ -1,14 +1,10 @@
+let listaTarefas = JSON.parse(localStorage.getItem('tarefas')) || []
+
 document.getElementById('bt_tarefa').addEventListener('click', addTarefa)
 
-//inicializar uma lista vazia
-
-//verificar se existe uma lista no local storage
-
-//fazer um lao for pra cada tarefa, chamar a func addTarefa]
-
-//quando add uma tarefa, add no local storage também
-
-//quando remover uma tarefa, remover do local storage também
+listaTarefas.forEach(element =>{
+    criarElemento(element)
+});
 
 function addTarefa(){
     //pega o valor de dentro do input
@@ -18,6 +14,14 @@ function addTarefa(){
         alert('o input esta vazio')
         return
     }
+    //adiciona tarefa no array de tarefas
+    listaTarefas.push(inputTarefa)
+    //coloca a lista no local storage
+    localStorage.setItem('tarefas', JSON.stringify(listaTarefas))
+
+    criarElemento(inputTarefa)
+}
+function criarElemento(inputTarefa){
     //criar o elemento <li>
     const elemento_tarefa = document.createElement('li')
     elemento_tarefa.className = 'item_tarefa'
@@ -29,6 +33,8 @@ function addTarefa(){
     botaoDeletar.textContent = 'Deletar Tarefa'
     botaoDeletar.addEventListener('click', ()=>{
         elemento_tarefa.remove()
+        listaTarefas = listaTarefas.filter((tarefa) => tarefa !== inputTarefa)
+        localStorage.setItem('tarefas', JSON.stringify(listaTarefas))
     })
     //adicionar um botão para completar a tarefa no <li>
     const botaoCompletar = document.createElement('button')
